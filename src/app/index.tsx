@@ -46,7 +46,7 @@ export default function HomeScreen() {
                                 <Text style={styles.buttonText}>Iniciar sesión</Text>
                             </Pressable>
                             <Pressable style={styles.linkButton}
-                                onPress={()=> route.push("/Signin")}
+                                       onPress={()=> route.push("/Signin")}
                             >
                                 <Text style={styles.linkText}>¿No tienes cuenta? Regístrate</Text>
                             </Pressable>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
     },
     linkText: {
-        fontSize: 18,
+        fontSize: 16,
         color:"#1E5F8E"
     },
 });
