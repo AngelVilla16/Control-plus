@@ -1,56 +1,99 @@
-# Welcome to your Expo app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# Control +
 
-## Get started
+Proyecto de Formulacion de Proyectos de TI enfocado en el control de la glucosa y la presion arterial. Creado con expo, react native y el gestor de paquetes Bun.
 
-1. Install dependencies
 
-   ```bash
-   npm install
-   ```
 
-2. Start the app
 
-   ```bash
-   npx expo start
-   ```
+## Tecnologias utilizadas
 
-In the output, you'll find options to open the app in a
+**Client/Frontend:** React Native, Expo Go, Typescript y CSS 
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+**Server:** Node, Express, Typescript
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+**BD:** Pendiente de decidir y estructurar
 
-## Get a fresh project
+**Control de versiones:** Git y Github
 
-When you're ready, run:
+
+
+## Requisitos previos
+
+
+Instalar el gestor de paquetes Bun
+
 
 ```bash
-npm run reset-project
+powershell -c "irm bun.sh/install.ps1|iex"
+o
+curl -fsSL https://bun.sh/install | bash
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+NodeJS
+```bash
+# Descarga e instala Chocolatey:
+powershell -c "irm https://community.chocolatey.org/install.ps1|iex"
+# Descarga e instala Node.js:
+choco install nodejs --version="24.21.0"
+# Verifica la versión de Node.js:
+node -v # Debería mostrar "v24.21.0".
+# Verifica versión de npm:
+npm -v # Debería mostrar "11.19.0".
+```
 
-### Other setup steps
+Expo Go: Necesitas instalar la aplicación Expo Go en un dispositivo android o ios para ejecutar el proyecto.
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
 
-## Learn more
+    
+## Run Locally
 
-To learn more about developing your project with Expo, look at the following resources:
+Clonar el proyecto
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+  git clone https://github.com/AngelVilla16/Control-plus
+```
 
-## Join the community
+Ir al directorio
 
-Join our community of developers creating universal apps.
+```bash
+  cd control-plus
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Instalar dependencias
+
+```bash
+  bun install
+```
+
+Iniciar el proyecto con expo 
+
+```bash
+  bun expo start
+```
+
+
+## Contribución
+Para contribuir en el proyecto crear una rama acorde a su área
+
+Frontend
+
+Backend
+
+Etc
+
+**Nomenclatura de commits**
+
+Todos los commits deben seguir la siguiente Nomenclatura
+
+
+Feature/Feat: nueva funcionalidad
+
+Fixed/Fix: Corrección de un error
+
+Docs: documentacion del proyecto
+
+Style: cambios en el formato css que no afectan las
+funciones
+
+Test: Ejecución de pruebas
