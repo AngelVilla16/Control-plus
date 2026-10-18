@@ -1,20 +1,38 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import {
-    KeyboardAvoidingView,
-    ScrollView,
-    StyleSheet,
+    Alert,
     Image,
     ImageBackground,
-    View,
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    ScrollView,
+    StyleSheet,
     Text,
     TextInput,
-    Pressable,
-    Platform,
+    View,
 } from 'react-native';
-import {useRouter} from 'expo-router';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Registro from '../services/registro';
 
 export default function Sign() {
     const route = useRouter();
+    const [nombre, setNombre] = useState<string>("");
+    const [correo, setCorreo] = useState<string>("");
+    const [contrasena, setContrasena] = useState<string>("");
+
+    const handleRegistro = async ()=>{
+        try{
+            const data:any = await Registro({nombre, correo, contrasena});
+            Alert.alert(data.mensaje);
+            route.push('/');
+        }
+        catch(error){
+            console.error("Error al registrar: ", error);
+        }
+    }
+
     return (
         <KeyboardAvoidingView
             style={styles.key}
@@ -36,17 +54,21 @@ export default function Sign() {
                         <View style={styles.form}>
                             <View style={styles.inputContainer}>
                                 <Image source={require('../assets/person.png')} style={styles.icon} />
-                                <TextInput placeholder="Nombre Completo" style={styles.input} />
+                                <TextInput placeholder="Nombre Completo" style={styles.input} onChangeText={setNombre} />
                             </View>
                             <View style={styles.inputContainer}>
                                 <Image source={require('../assets/mail.png')} style={styles.icon} />
-                                <TextInput placeholder="Correo electrónico" style={styles.input} />
+                                <TextInput autoCapitalize='none' placeholder="Correo electrónico" style={styles.input} 
+                                    onChangeText={setCorreo}
+                                />
                             </View>
                             <View style={styles.inputContainer}>
                                 <Image source={require('../assets/lock.png')} style={styles.icon} />
-                                <TextInput placeholder="Contraseña" secureTextEntry style={styles.input} />
+                                <TextInput autoCapitalize='none' placeholder="Contraseña" secureTextEntry style={styles.input} 
+                                    onChangeText={setContrasena}
+                                />
                             </View>
-                            <Pressable style={styles.button}>
+                            <Pressable style={styles.button} onPress={handleRegistro}>
                                 <Text style={styles.buttonText}>Registrarse</Text>
                             </Pressable>
                             <Pressable style={styles.linkButton}
