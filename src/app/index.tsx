@@ -1,20 +1,36 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import {
-    KeyboardAvoidingView,
-    ScrollView,
-    StyleSheet,
     Image,
     ImageBackground,
-    View,
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    ScrollView,
+    StyleSheet,
     Text,
     TextInput,
-    Pressable,
-    Platform,
+    View,
 } from 'react-native';
-import {useRouter} from 'expo-router';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Login from '../services/login';
 
 export default function HomeScreen() {
     const route = useRouter();
+    const [correo, setCorreo] = useState<string>("");
+    const [contrasena, setContrasena] = useState<string>("");
+
+    const handleLogin = async ()=>{
+        try{
+            
+            const data:any = await Login({correo, contrasena});
+            route.push('/home');
+        }
+        catch(error:any){
+            console.error("Error al iniciar sesión: ", error);
+        }    
+    }
+
     return (
         <KeyboardAvoidingView
             style={styles.key}
@@ -36,13 +52,13 @@ export default function HomeScreen() {
                         <View style={styles.form}>
                             <View style={styles.inputContainer}>
                                 <Image source={require('../assets/mail.png')} style={styles.icon} />
-                                <TextInput placeholder="Correo electrónico" style={styles.input} />
+                                <TextInput autoCapitalize='none' placeholder="Correo electrónico" style={styles.input} onChangeText={setCorreo} />
                             </View>
                             <View style={styles.inputContainer}>
                                 <Image source={require('../assets/lock.png')} style={styles.icon} />
-                                <TextInput placeholder="Contraseña" secureTextEntry style={styles.input} />
+                                <TextInput placeholder="Contraseña" secureTextEntry style={styles.input} autoCapitalize='none' onChangeText={setContrasena}  />
                             </View>
-                            <Pressable style={styles.button}>
+                            <Pressable style={styles.button} onPress={handleLogin}>
                                 <Text style={styles.buttonText}>Iniciar sesión</Text>
                             </Pressable>
                             <Pressable style={styles.linkButton}
