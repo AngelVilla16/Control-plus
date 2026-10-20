@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
 import { useState } from 'react';
 import {
     Image,
@@ -24,6 +25,11 @@ export default function HomeScreen() {
         try{
             
             const data:any = await Login({correo, contrasena});
+            const id = data.id_usuario;
+            const nombre = data.nombre;
+
+            await SecureStore.setItemAsync('id_usuario', String(id));
+            await SecureStore.setItemAsync('nombre', String(nombre));
             route.push('/home');
         }
         catch(error:any){
