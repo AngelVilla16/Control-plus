@@ -2,6 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
 import {
     Image,
+    Pressable,
     ScrollView,
     StyleSheet,
     Text,
@@ -35,8 +36,16 @@ export default function Home(){
         <ScrollView>
             <SafeAreaProvider style={styles.container}>
                 <View>
-                    <Text>Bienvenido: {nombre}</Text>
-                    <Text> Mejores numeros, mejor salud. </Text>
+                    <Text style={styles.title}>Bienvenido: {nombre}</Text>
+                    <Text style={styles.subtitle}> Mejores numeros, mejor salud. </Text>
+                </View>
+                <View>
+                    <Pressable>
+                        <Text>Registrar Glucosa</Text>    
+                    </Pressable>
+                    <Pressable>
+                        <Text>Registrar Presión</Text>
+                    </Pressable>
                 </View>
                 <View>
                     <View>
@@ -45,7 +54,7 @@ export default function Home(){
                     </View>
                     <View>
                         <Image source={require('../../assets/ecg.png')}/>
-                        <Text> MMHG</Text>
+                        <Text> Presión Arterial</Text>
                     </View>
                 </View>
                 <View>
@@ -59,6 +68,19 @@ export default function Home(){
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        padding:20,
+        padding:10,
+    },
+    title:{
+        fontSize:24,
+        paddingLeft:10,
+        paddingTop:22,
+        color:'#1E5F8E',
+        fontWeight:'bold',
+        textAlign:'center',
+    },
+    subtitle:{
+        fontSize:22,
+        textAlign:'center',
+        color:'#b7b7b7'
     }
 });

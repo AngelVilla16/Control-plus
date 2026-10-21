@@ -30,7 +30,7 @@ export default function HomeScreen() {
 
             await SecureStore.setItemAsync('id_usuario', String(id));
             await SecureStore.setItemAsync('nombre', String(nombre));
-            route.push('/home');
+            route.replace('/(tabs)/home');
         }
         catch(error:any){
             console.error("Error al iniciar sesión: ", error);
