@@ -6,6 +6,10 @@ export default function Layout() {
             screenOptions={{
                 headerShown: false, // <-- Esto oculta el rectángulo blanco en TODAS las pantallas
             }}
-        />
+        >
+            <Stack.Screen name='index' />
+            <Stack.Screen name='Signin' />
+            <Stack.Screen name='(tabs)'/>
+        </Stack>
     );
 }

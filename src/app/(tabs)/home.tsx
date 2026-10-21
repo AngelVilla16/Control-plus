@@ -1,6 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
 import {
+    Image,
     ScrollView,
     StyleSheet,
     Text,
@@ -32,9 +33,23 @@ export default function Home(){
 
     return(
         <ScrollView>
-            <SafeAreaProvider>
+            <SafeAreaProvider style={styles.container}>
                 <View>
                     <Text>Bienvenido: {nombre}</Text>
+                    <Text> Mejores numeros, mejor salud. </Text>
+                </View>
+                <View>
+                    <View>
+                        <Image source={require('../../assets/drop.png')}/>
+                        <Text>Glucosa</Text>
+                    </View>
+                    <View>
+                        <Image source={require('../../assets/ecg.png')}/>
+                        <Text> MMHG</Text>
+                    </View>
+                </View>
+                <View>
+                    <Text>Ultimas Mediciones</Text>
                 </View>
             </SafeAreaProvider>
         </ScrollView>
@@ -42,5 +57,8 @@ export default function Home(){
 }
 
 const styles = StyleSheet.create({
-
+    container:{
+        flex:1,
+        padding:20,
+    }
 });
