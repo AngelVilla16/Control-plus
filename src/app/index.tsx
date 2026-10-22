@@ -27,10 +27,18 @@ export default function HomeScreen() {
             const data:any = await Login({correo, contrasena});
             const id = data.id_usuario;
             const nombre = data.nombre;
-
+            const perfil = data.perfil_completo;
             await SecureStore.setItemAsync('id_usuario', String(id));
             await SecureStore.setItemAsync('nombre', String(nombre));
-            route.replace('/(tabs)/home');
+            
+            console.log(data.perfil_completo);
+            if(perfil === 0){
+                route.push('/CompletarPerfil');
+            }
+            else{
+                route.replace('/(tabs)/home');
+            }
+            
         }
         catch(error:any){
             console.error("Error al iniciar sesión: ", error);
