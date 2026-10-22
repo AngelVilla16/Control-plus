@@ -37,6 +37,7 @@ export default function HomeScreen() {
             }
             else{
                 route.replace('/(tabs)/home');
+                await SecureStore.setItemAsync('perfil', String(perfil));
             }
             
         }
