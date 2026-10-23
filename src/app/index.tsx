@@ -30,8 +30,7 @@ export default function HomeScreen() {
             const perfil = data.perfil_completo;
             await SecureStore.setItemAsync('id_usuario', String(id));
             await SecureStore.setItemAsync('nombre', String(nombre));
-            
-            console.log(data.perfil_completo);
+           
             if(perfil === 0){
                 route.push('/CompletarPerfil');
             }

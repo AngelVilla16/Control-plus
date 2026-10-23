@@ -1,3 +1,5 @@
+import { useRouter } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
 import { useState } from 'react';
 import {
     Modal,
@@ -8,18 +10,25 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import ActualizarPerfil from '../services/updateperfil';
 
 export default function CompletarPerfil(){
-
+    const route = useRouter();
     const [edadIn, setEdad] = useState<string>('');
     const [pesoIn, setPeso] = useState<string>('');
     const [alturaIn, setAltura] = useState<string>('');
+
 
     const handleCompletar = async ()=>{
         try{
             const edad = Number(edadIn);
             const peso = Number(pesoIn);
             const altura = Number(alturaIn);
+            const id_usuario:any = await SecureStore.getItemAsync('id_usuario'); 
+
+            const data = await ActualizarPerfil({edad,peso,altura, id_usuario});
+            route.replace('/(tabs)/home');
+
         }
         catch(error:any){
             console.error('Error al completar el perfil del usuario: ', error);
@@ -51,7 +60,7 @@ export default function CompletarPerfil(){
                                 <Text style={styles.modalText}>M</Text>
                             </View>
                         </View>
-                        <Pressable style={styles.btn}>
+                        <Pressable style={styles.btn} onPress={handleCompletar}>
                             <Text style={styles.btnText}>Confirmar Datos</Text>
                         </Pressable>
                     </View>
