@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     Modal,
     Pressable,
@@ -10,84 +11,131 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function CompletarPerfil(){
 
+    const [edadIn, setEdad] = useState<string>('');
+    const [pesoIn, setPeso] = useState<string>('');
+    const [alturaIn, setAltura] = useState<string>('');
+
+    const handleCompletar = async ()=>{
+        try{
+            const edad = Number(edadIn);
+            const peso = Number(pesoIn);
+            const altura = Number(alturaIn);
+        }
+        catch(error:any){
+            console.error('Error al completar el perfil del usuario: ', error);
+        }
+    };
 
     return(
         <SafeAreaProvider style={styles.container}>
-            <View>
-                <Modal style={styles.modal}>
-                    <Text style={styles.title}>Para completar su perfil, requeriremos un par de datos adicionales</Text>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalText}> Edad: </Text>
-                        <TextInput style={styles.modalInput} keyboardType='numeric'/>
-                        <Text style={styles.modalText}>Peso: (kg) </Text>
-                        <TextInput style={styles.modalInput} keyboardType='numeric'/>
-                        <Text style={styles.modalText}>Altura: (M)</Text>
-                        <TextInput style={styles.modalInput} keyboardType='numeric'/>
+            <Modal transparent={true} visible={true}>
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContainer}>
+                        <Text style={styles.title}>Completa tu perfil</Text>
+                        <Text style={styles.subtitle}>Necesitamos algunos datos adicionales para personalizar tu seguimiento de salud.</Text>
+                        <View style={styles.modalContent}>
+                            <View style={styles.modalData}>
+                                <Text style={styles.modalText}>Edad:</Text>
+                                <TextInput style={styles.modalInput} keyboardType='numeric' onChangeText={setEdad}  />
+                            </View>
+                            
+                            <View style={styles.modalData}>
+                                <Text style={styles.modalText}>Peso:  </Text>
+                                <TextInput style={styles.modalInput} keyboardType='numeric' onChangeText={setPeso}/>
+                                <Text style={styles.modalText}>KG</Text>
+                            </View>
+                            
+                            <View style={styles.modalData}>
+                                <Text style={styles.modalText}>Altura:</Text>
+                                <TextInput style={styles.modalInput} keyboardType='numeric' onChangeText={setAltura} />
+                                <Text style={styles.modalText}>M</Text>
+                            </View>
+                        </View>
+                        <Pressable style={styles.btn}>
+                            <Text style={styles.btnText}>Confirmar Datos</Text>
+                        </Pressable>
                     </View>
-                    <Pressable style={styles.btn}>
-                        <Text style={styles.btnText}>Confirmar Datos</Text>
-                    </Pressable>
-                </Modal>
-            </View>
+                </View>
+            </Modal>
         </SafeAreaProvider>
     );
 }
 
 const styles = StyleSheet.create({
 
-    modal:{
-        width:'100%',
-        height:'100%',
-        alignContent:'center',
-        textAlign:'center',
-    },
     container:{
         flex:1,
-        padding:20,
-        height:'100%',
+    },
+    modalOverlay: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContainer: {
+        width: '90%',
+        maxWidth: 400,
+        backgroundColor: 'white',
+        borderRadius: 16,
+        padding: 24,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+        elevation: 8,
     },
     modalContent:{
-        textAlign:'center',
         alignItems:'center',
         justifyContent:'center',
-        padding:70,
+        width: '100%',
+    },
+    modalData:{
+        flexDirection:'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginVertical: 12,
     },
     title:{
         textAlign:'center',
-        fontSize:18,
+        fontSize:20,
         fontWeight:'bold',
-        marginTop:50,
+        marginBottom: 8,
         color:'#1E5F8E',
-        
+    },
+    subtitle:{
+        fontSize:16,
+        textAlign:'center',
+        marginBottom: 24,
+        color: '#444',
     },
     modalText:{
         fontSize:16,
         fontWeight:'bold',
-
+        color: '#333',
     },
     modalInput:{
         borderWidth:1,
         borderRadius:10,
-        width:70,
-        padding:10,
-        margin:15,
+        flex: 1,
+        padding:12,
+        marginHorizontal: 12,
         textAlign:'center',
+        borderColor: '#ddd',
     },
     btn:{
-        borderWidth:1,
-        width:150,
-        alignSelf:'center',
+        width: '100%',
         alignItems:'center',
-        height:40,
+        height:48,
         borderRadius:10,
         backgroundColor:'#4FD1C5',
-        borderColor:'#1E5F8E'
-
-
+        justifyContent: 'center',
+        marginTop: 16,
     },
     btnText:{
-        padding:8,
         fontSize:16,
+        fontWeight: '600',
         color:'#FFFF'
     }
     
