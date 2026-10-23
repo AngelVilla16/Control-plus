@@ -8,6 +8,8 @@ export interface LoginResponse{
     mensaje?:string;
     correo?:string;
     contrasena?:string;
+    id_usuario?:number | string;
+    perfil_completo?:Boolean;
 }
 
 export default async function login(userData:LoginData): Promise<LoginResponse>{
