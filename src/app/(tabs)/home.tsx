@@ -78,7 +78,8 @@ export default function Home() {
                    
                 </View>
 
-                
+                {/* Esta es la seccion de botones*/}
+
                 <Text style={styles.sectionTitle}>Acciones rápidas</Text>
                 <View style={styles.actionsRow}>
                     <Pressable style={styles.actionCard} onPress={navigateToGlucosa}>
@@ -86,34 +87,34 @@ export default function Home() {
                             <Image source={require('../../assets/drop.png')} style={styles.actionIcon} />
                         </View>
                         <Text style={styles.actionLabel}>Registrar Glucosa</Text>
-                        <Text style={styles.actionSubtitle}>Nivel de azúcar</Text>
+                        
                     </Pressable>
                     <Pressable style={styles.actionCard} onPress={navigateToPresion}>
                         <View style={styles.actionIconContainer}>
                             <Image source={require('../../assets/ecg.png')} style={styles.actionIcon} />
                         </View>
                         <Text style={styles.actionLabel}>Registrar Presión</Text>
-                        <Text style={styles.actionSubtitle}>Arterial</Text>
+                      
                     </Pressable>
                 </View>
 
                 
                 <Text style={styles.sectionTitle}>Resumen de hoy</Text>
                 <View style={styles.statsRow}>
-                    <View style={styles.statCard}>
+                    <View style={styles.statCardGlucosa}>
                         <View style={styles.statIconContainer}>
                             <Image source={require('../../assets/drop.png')} style={styles.statIcon} />
                         </View>
                         <Text style={styles.statValue}>-- mg/dL</Text>
-                        <Text style={styles.statLabel}>Glucosa</Text>
+                        <Text style={styles.statLabelGlucosa}>Glucosa</Text>
                         <Text style={styles.statTime}>Sin registros hoy</Text>
                     </View>
-                    <View style={styles.statCard}>
+                    <View style={styles.statCardPresion}>
                         <View style={styles.statIconContainer}>
                             <Image source={require('../../assets/ecg.png')} style={styles.statIcon} />
                         </View>
                         <Text style={styles.statValue}>--/--</Text>
-                        <Text style={styles.statLabel}>Presión</Text>
+                        <Text style={styles.statLabelPresion}>Presión</Text>
                         <Text style={styles.statTime}>Sin registros hoy</Text>
                     </View>
                 </View>
@@ -223,6 +224,7 @@ const styles = StyleSheet.create({
     },
     actionCard: {
         flex: 1,
+        flexDirection:'row',
         backgroundColor: '#FFFFFF',
         borderRadius: 16,
         padding: 20,
@@ -234,33 +236,32 @@ const styles = StyleSheet.create({
         elevation: 3,
         borderWidth: 1,
         borderColor: '#E2E8F0',
+        height:60,
+        
+        
     },
     actionIconContainer: {
-        width: 56,
-        height: 56,
-        borderRadius: 14,
+        width: 28,
+        height: 28,
+        borderRadius: 24,
         backgroundColor: '#ECFDF5',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 14,
+        marginBottom: 0,
     },
     actionIcon: {
-        width: 28,
-        height: 28,
+        width: 24,
+        height: 24,
         tintColor: '#1E5F8E',
     },
     actionLabel: {
-        fontSize: 15,
+        fontSize: 14,
         fontWeight: '600',
         color: '#1E293B',
         textAlign: 'center',
-        marginBottom: 2,
+        marginBottom: 0,
     },
-    actionSubtitle: {
-        fontSize: 12,
-        color: '#94A3B8',
-        textAlign: 'center',
-    },
+  
 
     /* Stats Cards */
     statsRow: {
@@ -269,9 +270,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         gap: 12,
     },
-    statCard: {
+    statCardGlucosa: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
         borderRadius: 16,
         padding: 20,
         alignItems: 'center',
@@ -282,6 +282,21 @@ const styles = StyleSheet.create({
         elevation: 3,
         borderWidth: 1,
         borderColor: '#E2E8F0',
+        backgroundColor: '#F0F4FF',
+    },
+    statCardPresion: {
+        flex: 1,
+        borderRadius: 16,
+        padding: 20,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        elevation: 3,
+        borderWidth: 1,
+        borderColor: '#E2E8F0',
+        backgroundColor: '#FFF7ED',
     },
     statIconContainer: {
         width: 48,
@@ -303,10 +318,16 @@ const styles = StyleSheet.create({
         color: '#1E293B',
         marginBottom: 4,
     },
-    statLabel: {
+    statLabelGlucosa: {
         fontSize: 13,
         fontWeight: '500',
-        color: '#64748B',
+        color: '#1E3A8A',
+        marginBottom: 6,
+    },
+    statLabelPresion: {
+        fontSize: 13,
+        fontWeight: '500',
+        color: '#B45309',
         marginBottom: 6,
     },
     statTime: {
