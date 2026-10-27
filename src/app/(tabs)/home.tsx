@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
 import {
@@ -18,6 +18,7 @@ export default function Home() {
     const [id, setId] = useState<string>("");
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const route = useRouter();
 
     const obtenerUsuario = async () => {
         try {
@@ -47,7 +48,7 @@ export default function Home() {
 
     const navigateToGlucosa = () => {
         // TODO: Implementar navegación a registrar glucosa
-        console.log('Navegar a registrar glucosa');
+        route.push('/RegistrarGlucosa');
     };
     const navigateToPresion = () => {
         // TODO: Implementar navegación a registrar presión
@@ -119,10 +120,10 @@ export default function Home() {
                     </View>
                 </View>
 
-                {/* Recent Measurements */}
+                {/* Mediciones recientes */}
                 <View style={styles.sectionHeader}>
                     <Text style={styles.sectionTitle}>Últimas mediciones</Text>
-                    <Pressable style={styles.seeAllButton} onPress={() => router.push('/historial')}>
+                    <Pressable style={styles.seeAllButton} onPress={() => route.push('/historial')}>
                         <Text style={styles.seeAllText}>Ver todo</Text>
                     </Pressable>
                 </View>
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
         elevation: 3,
         borderWidth: 1,
         borderColor: '#E2E8F0',
-        height:60,
+        height:55,
         
         
     },
@@ -255,10 +256,10 @@ const styles = StyleSheet.create({
         tintColor: '#1E5F8E',
     },
     actionLabel: {
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: '600',
         color: '#1E293B',
-        textAlign: 'center',
+        textAlign: 'left',
         marginBottom: 0,
     },
   
