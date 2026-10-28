@@ -20,6 +20,7 @@ export default function HomeScreen() {
     const route = useRouter();
     const [correo, setCorreo] = useState<string>("");
     const [contrasena, setContrasena] = useState<string>("");
+    const [mensaje, setMensaje] = useState<string>("");
 
     const handleLogin = async ()=>{
         try{
@@ -42,6 +43,8 @@ export default function HomeScreen() {
         }
         catch(error:any){
             console.error("Error al iniciar sesión: ", error);
+            setMensaje(error.message || "Error al iniciar sesión");
+          
         }    
     }
 
@@ -72,6 +75,7 @@ export default function HomeScreen() {
                                 <Image source={require('../assets/lock.png')} style={styles.icon} />
                                 <TextInput placeholder="Contraseña" secureTextEntry style={styles.input} autoCapitalize='none' onChangeText={setContrasena}  />
                             </View>
+                            {mensaje && <View style={styles.labelcontainer}> <Text style={styles.label}>{mensaje}</Text> </View>}
                             <Pressable style={styles.button} onPress={handleLogin}>
                                 <Text style={styles.buttonText}>Iniciar sesión</Text>
                             </Pressable>
@@ -160,4 +164,18 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color:"#1E5F8E"
     },
+    labelcontainer:{
+        borderWidth:1,
+        borderColor:'red',
+        alignSelf:'center',
+        alignContent:'center',
+        width:280,
+        borderRadius:5,
+        backgroundColor:'#FF7A6C'
+    },
+    label:{
+      textAlign:'center',
+      fontSize:16,
+      color:'white'
+    }
 });
