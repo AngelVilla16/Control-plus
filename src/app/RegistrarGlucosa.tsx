@@ -1,6 +1,8 @@
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import * as SecureStore from 'expo-secure-store';
+import { useEffect, useState } from 'react';
 import {
+    Alert,
     Pressable,
     StyleSheet,
     Text,
@@ -9,19 +11,50 @@ import {
     View
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import registrar from '../services/mediciones';
 
 const OPCIONES = ['Ayunas', 'Antes de comer', 'Despues de comer', 'Antes de dormir'];
 
 export default function RegistrarGlucosa(){
     const [abierto, setAbierto] = useState(false);
     const [seleccionado, setSeleccionado] = useState(OPCIONES[0]);
+    const [glucosa, setGlucosa] = useState<string>("");
+    const [id_usuario, setIdUsuario] = useState<string>('');
     const route = useRouter();
+
+    const obtenerid = async ()=>{
+        const id = await SecureStore.getItemAsync('id_usuario');
+        if(id !== null){
+            setIdUsuario(id);
+        }
+        else{
+            console.error("Error al obtener el id");
+        }
+
+    };
+
+    useEffect(()=>{
+        obtenerid();
+    },[]);
+
+    const handleRegistro = async ()=>{
+        try{
+            const data:any = await registrar({id_usuario, seleccionado, glucosa});
+            Alert.alert(data.mensaje);
+            route.replace('/(tabs)/home');
+        }
+        catch(error:any){
+            console.error('Error al registrar glucosa');
+            Alert.alert(error.message);
+            return;
+        }
+    }
 
     return(
         <SafeAreaProvider style={styles.container}>
             <Text style={styles.title}>Registrar Glucosa</Text>
             <View style={styles.head}>
-                <TextInput style={styles.input} placeholderTextColor='#4fd1c47f' keyboardType='numeric' placeholder='0'/>
+                <TextInput style={styles.input} placeholderTextColor='#4fd1c47f' keyboardType='numeric' placeholder='0' onChangeText={setGlucosa}/>
                 <Text style={styles.subheadline}>mg/dL</Text>
             </View>
             <View>
@@ -47,7 +80,7 @@ export default function RegistrarGlucosa(){
                 </View>
 
                 <View style={styles.opciones}>
-                    <Pressable style={styles.opcionguardar} onPress={()=> console.log(seleccionado)}>
+                    <Pressable style={styles.opcionguardar} onPress={handleRegistro}>
                         <Text style={styles.textguardar}>Guardar</Text>
                     </Pressable>
                     <Pressable style={styles.opcioncancelar} onPress={()=> route.replace('/(tabs)/home')}>

@@ -52,7 +52,7 @@ export default function Home() {
     };
     const navigateToPresion = () => {
         // TODO: Implementar navegación a registrar presión
-        console.log('Navegar a registrar presión');
+        route.push('/RegistrarPresion');
     };
 
     if (loading) {
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
         elevation: 3,
         borderWidth: 1,
         borderColor: '#E2E8F0',
-        height:55,
+        height:58,
         
         
     },
