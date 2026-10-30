@@ -33,4 +33,5 @@ export default async function RegistrarGlucosa(glucosadata:GlucosaData):Promise<
         console.error("Error al registrar glucosa");
         throw error;
     }
-}
+};
+

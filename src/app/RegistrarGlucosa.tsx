@@ -11,7 +11,7 @@ import {
     View
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import registrar from '../services/mediciones';
+import registrar from '../services/glucosa';
 
 const OPCIONES = ['Ayunas', 'Antes de comer', 'Despues de comer', 'Antes de dormir'];
 

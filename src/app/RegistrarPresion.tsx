@@ -11,15 +11,16 @@ import {
     View
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import registrar from '../services/mediciones';
+import registrar from '../services/presion';
 
 const OPCIONES = ['Reposo', 'Después de actividad', 'Antes de dormir'];
 
 export default function RegistrarPresion(){
     const [abierto, setAbierto] = useState(false);
     const [seleccionado, setSeleccionado] = useState(OPCIONES[0]);
-    const [glucosa, setGlucosa] = useState<string>("");
     const [id_usuario, setIdUsuario] = useState<string>('');
+    const [sistolica, setSistolica] = useState<string>('');
+    const [diastolica, setDiastolica] = useState<string>('');
     const route = useRouter();
 
     const obtenerid = async ()=>{
@@ -39,12 +40,12 @@ export default function RegistrarPresion(){
 
     const handleRegistro = async ()=>{
         try{
-            const data:any = await registrar({id_usuario, seleccionado, glucosa});
+            const data:any = await registrar({id_usuario, seleccionado, sistolica, diastolica});
             Alert.alert(data.mensaje);
             route.replace('/(tabs)/home');
         }
         catch(error:any){
-            console.error('Error al registrar glucosa');
+            console.error('Error al registrar presion: ', error);
             Alert.alert(error.message);
             return;
         }
@@ -55,11 +56,11 @@ export default function RegistrarPresion(){
             <Text style={styles.title}>Registrar Presión</Text>
             <View style={styles.head}>
                 <View>
-                    <TextInput style={styles.input} placeholderTextColor='#4fd1c47f' keyboardType='numeric'    placeholder='0' onChangeText={setGlucosa}/>
+                    <TextInput style={styles.input} placeholderTextColor='#4fd1c47f' keyboardType='numeric'    placeholder='0' onChangeText={setSistolica}/>
                     <Text style={styles.subheadline}>Sistólica</Text>
                 </View> 
                 <View>
-                    <TextInput style={styles.input} placeholderTextColor='#4fd1c47f' keyboardType='numeric' placeholder='0' onChangeText={setGlucosa}/>
+                    <TextInput style={styles.input} placeholderTextColor='#4fd1c47f' keyboardType='numeric' placeholder='0' onChangeText={setDiastolica}/>
                     <Text style={styles.subheadline}>Diastólica</Text>
                 </View>
             </View>
