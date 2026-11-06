@@ -11,7 +11,7 @@ import {
     View
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import registrar from '../services/glucosa';
+import { RegistrarGlucosa as RegistrarGlucosaService } from '../services/glucosa';
 
 const OPCIONES = ['Ayunas', 'Antes de comer', 'Despues de comer', 'Antes de dormir'];
 
@@ -20,6 +20,7 @@ export default function RegistrarGlucosa(){
     const [seleccionado, setSeleccionado] = useState(OPCIONES[0]);
     const [glucosa, setGlucosa] = useState<string>("");
     const [id_usuario, setIdUsuario] = useState<string>('');
+    const [token, setToken] = useState<string>('');
     const route = useRouter();
 
     const obtenerid = async ()=>{
@@ -30,7 +31,10 @@ export default function RegistrarGlucosa(){
         else{
             console.error("Error al obtener el id");
         }
-
+        const t = await SecureStore.getItemAsync('user_token');
+        if(t !== null){
+            setToken(t);
+        }
     };
 
     useEffect(()=>{
@@ -39,7 +43,7 @@ export default function RegistrarGlucosa(){
 
     const handleRegistro = async ()=>{
         try{
-            const data:any = await registrar({id_usuario, seleccionado, glucosa});
+            const data:any = await RegistrarGlucosaService({id_usuario, seleccionado, glucosa}, token);
             Alert.alert(data.mensaje);
             route.replace('/(tabs)/home');
         }

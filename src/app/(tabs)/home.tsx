@@ -1,3 +1,4 @@
+import { ObtenerGlucosa } from '@/services/glucosa';
 import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
@@ -9,25 +10,33 @@ import {
     ScrollView,
     StyleSheet,
     Text,
+    TouchableOpacity,
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Home() {
     const [nombre, setNombre] = useState<string>("");
+    const [filtro, setFiltro] = useState<string>("glucosa");
     const [id, setId] = useState<string>("");
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const route = useRouter();
+    const [glucosa, setGlucosa] = useState<any>([]);
+    const [token, setToken] = useState<string>("");
 
     const obtenerUsuario = async () => {
         try {
             const id_guardado = await SecureStore.getItemAsync('id_usuario');
             const nombre_guardado = await SecureStore.getItemAsync('nombre');
+            const token_guardado = await SecureStore.getItemAsync('user_token');
 
             if (id_guardado !== null) {
                 setId(id_guardado);
                 setNombre(nombre_guardado || '');
+            }
+            if (token_guardado !== null) {
+                setToken(token_guardado);
             }
         } catch (error) {
             console.error("Error al leer los datos del usuario: ", error);
@@ -40,6 +49,19 @@ export default function Home() {
         obtenerUsuario();
     }, []);
 
+    useEffect(() => {
+        async function fetchGlucosa() {
+            try {
+                if (!token) return;
+                const data = await ObtenerGlucosa(token);
+                setGlucosa(data);
+            } catch (error: any) {
+                console.error("Error al traer la glucosa: ", error);
+            }
+        }
+        fetchGlucosa();
+    }, [token]);
+
     const onRefresh = async () => {
         setRefreshing(true);
         await obtenerUsuario();
@@ -47,11 +69,11 @@ export default function Home() {
     };
 
     const navigateToGlucosa = () => {
-        // TODO: Implementar navegación a registrar glucosa
+        
         route.push('/RegistrarGlucosa');
     };
     const navigateToPresion = () => {
-        // TODO: Implementar navegación a registrar presión
+        
         route.push('/RegistrarPresion');
     };
 
@@ -127,12 +149,17 @@ export default function Home() {
                         <Text style={styles.seeAllText}>Ver todo</Text>
                     </Pressable>
                 </View>
+                <View style={styles.filtercontainer}>
+                   <TouchableOpacity style={[styles.filterbutton, filtro === 'glucosa' && styles.filterbuttonactive]} onPress={()=> setFiltro('glucosa')}>
+                    <Text style={styles.textfilter}>Glucosa</Text>
+                   </TouchableOpacity>
+
+                   <TouchableOpacity style={[styles.filterbutton, filtro==='presion' && styles.filterbuttonactive]} onPress={()=> setFiltro('presion') }>
+                    <Text style={styles.textfilter}>Presión</Text>
+                   </TouchableOpacity>
+                </View>
                 <View style={styles.measurementsList}>
-                    <View style={styles.emptyState}>
-                        <Image source={require('../../assets/drop.png')} style={styles.emptyIcon} />
-                        <Text style={styles.emptyText}>No hay mediciones registradas</Text>
-                        <Text style={styles.emptySubtext}>Comienza registrando tu primera medición</Text>
-                    </View>
+                   
                 </View>
             </SafeAreaView>
         </ScrollView>
@@ -373,5 +400,25 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: '#94A3B8',
         textAlign: 'center',
+    },
+    filtercontainer:{
+        flexDirection:'row',
+        padding:3,
+        margin:10,
+        justifyContent:'space-between',
+    },
+    filterbutton:{
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 20,
+        backgroundColor: '#F1F5F9',
+    },
+    filterbuttonactive:{
+        backgroundColor: '#4FD1C5',
+        
+    },
+    textfilter:{
+        fontSize:16,
+        fontWeight:'500'
     },
 });
