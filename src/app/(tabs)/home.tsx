@@ -1,4 +1,3 @@
-import { ObtenerGlucosa } from '@/services/glucosa';
 import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
@@ -14,6 +13,7 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ObtenerGlucosa } from '@/services/glucosa';
 
 export default function Home() {
     const [nombre, setNombre] = useState<string>("");
@@ -22,7 +22,7 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const route = useRouter();
-    const [glucosa, setGlucosa] = useState<any>([]);
+    const [glucosa, setGlucosa] = useState<any>(null);
     const [token, setToken] = useState<string>("");
 
     const obtenerUsuario = async () => {
@@ -37,6 +37,14 @@ export default function Home() {
             }
             if (token_guardado !== null) {
                 setToken(token_guardado);
+                try {
+                    const data = await ObtenerGlucosa(token_guardado);
+                    if (Array.isArray(data) && data.length > 0) {
+                        setGlucosa(data[0]);
+                    }
+                } catch (e) {
+                    console.error('Error al obtener glucosa: ', e);
+                }
             }
         } catch (error) {
             console.error("Error al leer los datos del usuario: ", error);
@@ -49,19 +57,7 @@ export default function Home() {
         obtenerUsuario();
     }, []);
 
-    useEffect(() => {
-        async function fetchGlucosa() {
-            try {
-                if (!token) return;
-                const data = await ObtenerGlucosa(token);
-                setGlucosa(data);
-            } catch (error: any) {
-                console.error("Error al traer la glucosa: ", error);
-            }
-        }
-        fetchGlucosa();
-    }, [token]);
-
+    
     const onRefresh = async () => {
         setRefreshing(true);
         await obtenerUsuario();
@@ -121,14 +117,14 @@ export default function Home() {
                     </Pressable>
                 </View>
 
-                
+                {/* Sección de resumen*/}
                 <Text style={styles.sectionTitle}>Resumen de hoy</Text>
                 <View style={styles.statsRow}>
                     <View style={styles.statCardGlucosa}>
                         <View style={styles.statIconContainer}>
                             <Image source={require('../../assets/drop.png')} style={styles.statIcon} />
                         </View>
-                        <Text style={styles.statValue}>-- mg/dL</Text>
+                        <Text style={styles.statValue}> {glucosa ? `${glucosa.nivel_glucosa} mg/dL` : '-- mg/dL'}</Text>
                         <Text style={styles.statLabelGlucosa}>Glucosa</Text>
                         <Text style={styles.statTime}>Sin registros hoy</Text>
                     </View>
@@ -150,7 +146,7 @@ export default function Home() {
                     </Pressable>
                 </View>
                 <View style={styles.filtercontainer}>
-                   <TouchableOpacity style={[styles.filterbutton, filtro === 'glucosa' && styles.filterbuttonactive]} onPress={()=> setFiltro('glucosa')}>
+                   <TouchableOpacity style={[styles.filterbutton, filtro === 'glucosa' && styles.filterbuttonactive]} onPress={()=>setFiltro('glucosa')}>
                     <Text style={styles.textfilter}>Glucosa</Text>
                    </TouchableOpacity>
 

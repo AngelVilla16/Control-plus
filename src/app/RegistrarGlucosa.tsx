@@ -43,7 +43,8 @@ export default function RegistrarGlucosa(){
 
     const handleRegistro = async ()=>{
         try{
-            const data:any = await RegistrarGlucosaService({id_usuario, seleccionado, glucosa}, token);
+            const tipo:string = 'Glucosa';
+            const data:any = await RegistrarGlucosaService({tipo,id_usuario, seleccionado, glucosa}, token);
             Alert.alert(data.mensaje);
             route.replace('/(tabs)/home');
         }
