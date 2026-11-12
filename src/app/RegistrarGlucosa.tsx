@@ -119,7 +119,8 @@ const styles = StyleSheet.create({
      input:{
          color:'#1E5F8E',
          fontSize:40,
-         textAlign:'center'
+         textAlign:'center',
+         width:70,
      },
      subheadline:{
         color:'#1E5F8E',

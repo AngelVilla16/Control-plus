@@ -16,18 +16,23 @@ export interface PresionResponse{
     mensaje?:string;
 }
 
-export default async function RegistrarPresion(presiondata:PresionData):Promise<PresionResponse>{
+export default async function RegistrarPresion(presiondata:PresionData, token?:string):Promise<PresionResponse>{
     try{
-        const res = await fetch(`${API_URL}/registrar-presion`,{
+        const headers: Record<string, string> = {'Content-Type': 'application/json'};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        const res = await fetch(`${API_URL}/mediciones/registrar-presion`,{
             method:'POST',
-            headers:{'Content-Type':'application/json'},
+            headers,
             body:JSON.stringify(presiondata)
         });
 
-        if (!res.ok) {
-            const texto = await res.text();
-            console.log('STATUS:', res.status, 'BODY:', texto);
-            throw new Error(`Error ${res.status}: ${texto}`);
+        if(!res.ok){
+            const errorText = await res.text();
+            const parsed = JSON.parse(errorText);
+            let mensaje = parsed?.message ?? errorText;
+            throw new Error(` ${mensaje}`);
         }
         const data:PresionResponse = await res.json();
         return data;

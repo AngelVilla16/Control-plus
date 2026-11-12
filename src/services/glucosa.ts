@@ -5,7 +5,7 @@ export interface GlucosaData{
     tipo:string;
     glucosa:number | string;
     seleccionado:string;
-
+    
     
 
 }
@@ -33,13 +33,14 @@ export async function RegistrarGlucosa(glucosadata:GlucosaData, token?: string):
         const res = await fetch(`${API_URL}/mediciones/registrar-glucosa`,{
             method:'POST',
             headers,
-            body:JSON.stringify({glucosa:Number(glucosadata.glucosa), seleccionado: glucosadata.seleccionado })
+            body:JSON.stringify({id_usuario:Number(glucosadata.id_usuario),tipo:glucosadata.tipo,glucosa:Number(glucosadata.glucosa), seleccionado: glucosadata.seleccionado })
         });
 
         if(!res.ok){
             const errorText = await res.text();
-            console.error('Error detallado del backend:', errorText);
-            throw new Error(`Error del servidor (${res.status}): ${errorText}`);
+            const parsed = JSON.parse(errorText);
+            let mensaje = parsed?.message ?? errorText;
+            throw new Error(` ${mensaje}`);
         }
         const data:GlucosaResponse = await res.json();
         return data;
