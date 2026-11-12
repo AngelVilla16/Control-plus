@@ -21,6 +21,7 @@ export default function RegistrarPresion(){
     const [id_usuario, setIdUsuario] = useState<string>('');
     const [sistolica, setSistolica] = useState<string>('');
     const [diastolica, setDiastolica] = useState<string>('');
+    const [token, setToken] = useState<string>('');
     const route = useRouter();
 
     const obtenerid = async ()=>{
@@ -31,6 +32,11 @@ export default function RegistrarPresion(){
         else{
             console.error("Error al obtener el id");
         }
+        const t = await SecureStore.getItemAsync('user_token');
+
+        if(t !== null){
+            setToken(t);
+        }
 
     };
 
@@ -40,7 +46,7 @@ export default function RegistrarPresion(){
 
     const handleRegistro = async ()=>{
         try{
-            const data:any = await registrar({id_usuario, seleccionado, sistolica, diastolica});
+            const data:any = await registrar({id_usuario, seleccionado, sistolica, diastolica}, token);
             Alert.alert(data.mensaje);
             route.replace('/(tabs)/home');
         }

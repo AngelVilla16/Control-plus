@@ -29,15 +29,19 @@ export default function HomeScreen() {
             const id = data.id_usuario;
             const nombre = data.nombre;
             const perfil = data.perfil_completo;
+            const token = data.token;
             await SecureStore.setItemAsync('id_usuario', String(id));
             await SecureStore.setItemAsync('nombre', String(nombre));
+            await SecureStore.setItemAsync('user_token', String(token));
+            
            
             if(perfil === 0){
                 route.push('/CompletarPerfil');
             }
             else{
-                route.replace('/(tabs)/home');
                 await SecureStore.setItemAsync('perfil', String(perfil));
+                route.replace('/(tabs)/home');
+                
             }
             
         }

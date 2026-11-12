@@ -1,9 +1,12 @@
 import API_URL from './api';
 
 export interface GlucosaData{
+    id_usuario: number | string;
+    tipo:string;
     glucosa:number | string;
     seleccionado:string;
-    id_usuario:number | string;
+    
+    
 
 }
 
@@ -13,17 +16,31 @@ export interface GlucosaResponse{
     glucosa?:number | string;
     mensaje?:string;
 }
+export interface DataResponse{
+    momento?:string;
+    id?:string | number;
+    glucosa?:number | string;
+    fecha?: string;
+    mensaje?:string;
+}
 
-export default async function RegistrarGlucosa(glucosadata:GlucosaData):Promise<GlucosaResponse>{
+export async function RegistrarGlucosa(glucosadata:GlucosaData, token?: string):Promise<GlucosaResponse>{
     try{
-        const res = await fetch(`${API_URL}/registrar-glucosa`,{
+        const headers: Record<string, string> = {'Content-Type': 'application/json'};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        const res = await fetch(`${API_URL}/mediciones/registrar-glucosa`,{
             method:'POST',
-            headers:{'Content-Type': 'application/json'},
-            body:JSON.stringify(glucosadata)
+            headers,
+            body:JSON.stringify({id_usuario:Number(glucosadata.id_usuario),tipo:glucosadata.tipo,glucosa:Number(glucosadata.glucosa), seleccionado: glucosadata.seleccionado })
         });
 
         if(!res.ok){
-            throw new Error('Error al registrar niveles de glucosa');
+            const errorText = await res.text();
+            const parsed = JSON.parse(errorText);
+            let mensaje = parsed?.message ?? errorText;
+            throw new Error(` ${mensaje}`);
         }
         const data:GlucosaResponse = await res.json();
         return data;
@@ -35,3 +52,26 @@ export default async function RegistrarGlucosa(glucosadata:GlucosaData):Promise<
     }
 };
 
+export async function ObtenerGlucosa(token: string): Promise<DataResponse[]> {
+    try {
+        const res = await fetch(`${API_URL}/historial-glucosa`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!res.ok) {
+            const body = await res.text();
+            console.error('ObtenerGlucosa failed', res.status, body);
+            throw new Error('Error al obtener glucosa');
+        }
+
+        const data: DataResponse[] = await res.json();
+        return data;
+    } catch (error: any) {
+        console.log("Error al obtener glucosa: ", error);
+        throw error;
+    }
+}

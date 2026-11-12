@@ -8,8 +8,8 @@ export default function BottomTabs(){
                 position:'absolute',
                 borderTopWidth:0,
                 elevation:0,
-                height:60,
-                paddingBottom:8
+                height:100,
+                paddingBottom:20
             },
             tabBarActiveTintColor:'#0e3755',
             tabBarInactiveTintColor:'#1E5F8E'
