@@ -11,8 +11,8 @@ export default function BottomTabs(){
                 height:100,
                 paddingBottom:20
             },
-            tabBarActiveTintColor:'#1E5F8E',
-            tabBarInactiveTintColor:'#FF7A6C'
+            tabBarActiveTintColor:'#FF7A6C',
+            tabBarInactiveTintColor:'#1E5F8E'
         }}
         >
         <Tabs.Screen name='home' options={{title:"Principal", tabBarIcon:({color,size})=>(
