@@ -21,6 +21,7 @@ export default function Sign() {
     const [nombre, setNombre] = useState<string>("");
     const [correo, setCorreo] = useState<string>("");
     const [contrasena, setContrasena] = useState<string>("");
+    const [mensaje, setMensaje] = useState<string>('');
 
     const handleRegistro = async ()=>{
         try{
@@ -28,8 +29,9 @@ export default function Sign() {
             Alert.alert(data.mensaje);
             route.push('/');
         }
-        catch(error){
+        catch(error:any){
             console.error("Error al registrar: ", error);
+            setMensaje(error.message || "Error al registrar");
         }
     }
 
@@ -68,6 +70,7 @@ export default function Sign() {
                                     onChangeText={setContrasena}
                                 />
                             </View>
+                             {mensaje && <View style={styles.labelcontainer}> <Text style={styles.label}>{mensaje}</Text> </View>}
                             <Pressable style={styles.button} onPress={handleRegistro}>
                                 <Text style={styles.buttonText}>Registrarse</Text>
                             </Pressable>
@@ -156,4 +159,18 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color:'#1E5F8E',
     },
+     labelcontainer:{
+        borderWidth:1,
+        borderColor:'red',
+        alignSelf:'center',
+        alignContent:'center',
+        width:280,
+        borderRadius:5,
+        backgroundColor:'#FF7A6C'
+    },
+    label:{
+      textAlign:'center',
+      fontSize:16,
+      color:'white'
+    }
 });

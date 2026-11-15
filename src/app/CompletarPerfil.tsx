@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Modal,
     Pressable,
@@ -12,12 +12,25 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ActualizarPerfil from '../services/updateperfil';
 
+
 export default function CompletarPerfil(){
     const route = useRouter();
     const [edadIn, setEdad] = useState<string>('');
     const [pesoIn, setPeso] = useState<string>('');
     const [alturaIn, setAltura] = useState<string>('');
+    const [token, setToken] = useState<string>('');
 
+
+    //Funcion para traer el token supongo
+    const obtenerTokenFunction = async()=>{
+        const obtenerToken = await SecureStore.getItemAsync('user_token');
+        if(obtenerToken !== null){
+            setToken(obtenerToken);
+        }
+    }
+    useEffect(()=>{
+        obtenerTokenFunction();
+    },[]);
 
     const handleCompletar = async ()=>{
         try{
@@ -26,14 +39,14 @@ export default function CompletarPerfil(){
             const altura = Number(alturaIn);
             const id_usuario:any = await SecureStore.getItemAsync('id_usuario'); 
 
-            const data = await ActualizarPerfil({edad,peso,altura, id_usuario});
+            const data = await ActualizarPerfil({edad,peso,altura, id_usuario}, token);
             route.replace('/(tabs)/home');
 
         }
         catch(error:any){
             console.error('Error al completar el perfil del usuario: ', error);
         }
-    };
+    };                                   
 
     return(
         <SafeAreaProvider style={styles.container}>

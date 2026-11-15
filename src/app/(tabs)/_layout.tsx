@@ -11,7 +11,7 @@ export default function BottomTabs(){
                 height:100,
                 paddingBottom:20
             },
-            tabBarActiveTintColor:'#0e3755',
+            tabBarActiveTintColor:'#FF7A6C',
             tabBarInactiveTintColor:'#1E5F8E'
         }}
         >
@@ -20,6 +20,9 @@ export default function BottomTabs(){
         ),}} />
         <Tabs.Screen name='historial' options={{title:"Historial", tabBarIcon:({color, size})=>(
             <Ionicons name='document-text-outline' size={size} color={color}/>
+        ),}}/>
+        <Tabs.Screen name='perfil' options={{title:"Perfil", tabBarIcon:({color, size})=>(
+            <Ionicons name='person-outline' size={size} color={color} />
         ),}}/>
         </Tabs>
     );

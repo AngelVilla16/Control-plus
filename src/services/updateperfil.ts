@@ -17,18 +17,23 @@ export interface PerfilResponse{
     perfil_completo?:boolean;
 }
 
-export default async function ActualizarPerfil(perfildata:perfilData):Promise<PerfilResponse>{
+export default async function ActualizarPerfil(perfildata:perfilData, token?:string):Promise<PerfilResponse>{
     try{
-
-        const res = await fetch(`${API_URL}/actualizar-perfil`,{
+        const headers: Record<string, string> = {'Content-Type': 'application/json'};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        const res = await fetch(`${API_URL}/profile/actualizar-perfil`,{
             method:'PATCH',
-            headers:{'Content-Type': 'application/json'},
-            body: JSON.stringify(perfildata)
+            headers,
+            body: JSON.stringify({edad:perfildata.edad, peso:perfildata.peso, altura:perfildata.altura, id_usuario:Number(perfildata.id_usuario)})
 
         });
 
         if(!res.ok){
-            throw new Error('Error al actualizar el perfil');
+            const errorText = await res.text();
+            console.error('Error detallado del backend:', errorText);
+            throw new Error(`Error del servidor (${res.status}): ${errorText}`);
         }
         const data:PerfilResponse = await res.json();
 

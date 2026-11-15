@@ -35,7 +35,7 @@ export default function HomeScreen() {
             await SecureStore.setItemAsync('user_token', String(token));
             
            
-            if(perfil === 0){
+            if(perfil === false){
                 route.push('/CompletarPerfil');
             }
             else{
