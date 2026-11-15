@@ -46,7 +46,7 @@ export default function CompletarPerfil(){
         catch(error:any){
             console.error('Error al completar el perfil del usuario: ', error);
         }
-    };
+    };                                   
 
     return(
         <SafeAreaProvider style={styles.container}>

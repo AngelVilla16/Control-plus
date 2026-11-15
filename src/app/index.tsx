@@ -29,7 +29,6 @@ export default function HomeScreen() {
             const id = data.id_usuario;
             const nombre = data.nombre;
             const perfil = data.perfil_completo;
-            console.log(perfil);
             const token = data.token;
             await SecureStore.setItemAsync('id_usuario', String(id));
             await SecureStore.setItemAsync('nombre', String(nombre));
