@@ -16,6 +16,8 @@ export default function Perfil(){
     const [editandoEdad, setEditandoEdad] = useState<boolean>(false);
     const [editandoPeso, setEditandoPeso] = useState<boolean>(false);
     const [editandoAltura, setEditandoAltura] = useState<boolean>(false);
+    const [imc, setImc] = useState<number>(0);
+    const [imcText, setImcText] = useState<string>('');
 
     const getdatos = async()=>{
         try{
@@ -28,6 +30,23 @@ export default function Perfil(){
             setEdad(data.edad || 0);
             setPeso(data.peso || 0);
             setAltura(data.altura || 0);
+
+            const alturacuadrada = Math.pow(altura,2);
+            const imc = peso / alturacuadrada;
+            setImc(imc);
+
+            if(imc<18.5){
+                setImcText('Bajo peso');
+            }
+            else if(imc>18.5 && imc<24.9){
+                setImcText('Peso Normal');
+            }
+            else if(imc>=25 && imc<29.9){
+                setImcText('Sobrepeso');
+            }
+            else{
+                setImcText('Obesidad');
+            }
         }
         catch(error: any){
             console.error('Error al obtener el perfil del usuario: ', error);
@@ -73,6 +92,7 @@ export default function Perfil(){
                 </View>
                 <Text style={styles.title}>{nombre}</Text>
                 <Text style={styles.subtitle}>{correo}</Text>
+                <Text style={styles.subtitle}> Indice de masa corporal: {imc.toFixed(2)} {imcText}</Text>
             </View>
 
             <Text style={styles.sectionTitle}>Mis datos</Text>

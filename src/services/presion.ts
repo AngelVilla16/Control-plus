@@ -16,7 +16,7 @@ export interface PresionResponse{
     mensaje?:string;
 }
 
-export default async function RegistrarPresion(presiondata:PresionData, token?:string):Promise<PresionResponse>{
+export async function RegistrarPresion(presiondata:PresionData, token?:string):Promise<PresionResponse>{
     try{
         const headers: Record<string, string> = {'Content-Type': 'application/json'};
         if (token) {
@@ -42,3 +42,24 @@ export default async function RegistrarPresion(presiondata:PresionData, token?:s
         throw error;
     }
 }
+
+export async function ObtenerPresion(token:string):Promise<PresionResponse[]>{
+    try{
+        const res = await fetch(`${API_URL}/mediciones/presion-reciente`,{
+            method:'GET',
+            headers:{'Authorization': `Bearer ${token}`}
+        }); 
+        if(!res.ok){
+            const errorText = await res.text();
+            console.error('Error detallado del backend:', errorText);
+            throw new Error(`Error del servidor (${res.status}): ${errorText}`);
+        }
+        const data:PresionResponse[] = await res.json();
+        return data;
+    }
+    catch(error:any){
+        console.error('Error al obtener presion:', error);
+        throw error;
+    }
+}
+

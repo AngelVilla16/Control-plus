@@ -11,7 +11,7 @@ import {
     View
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import registrar from '../services/presion';
+import { RegistrarPresion as registrar } from '../services/presion';
 
 const OPCIONES = ['Reposo', 'Después de actividad', 'Antes de dormir'];
 
