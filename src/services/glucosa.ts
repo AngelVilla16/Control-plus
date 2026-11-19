@@ -54,7 +54,7 @@ export async function RegistrarGlucosa(glucosadata:GlucosaData, token?: string):
 
 export async function ObtenerGlucosa(token: string): Promise<DataResponse[]> {
     try {
-        const res = await fetch(`${API_URL}/historial-glucosa`, {
+        const res = await fetch(`${API_URL}/mediciones/glucosa-reciente`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -62,13 +62,17 @@ export async function ObtenerGlucosa(token: string): Promise<DataResponse[]> {
             }
         });
 
-        if (!res.ok) {
-            const body = await res.text();
-            console.error('ObtenerGlucosa failed', res.status, body);
-            throw new Error('Error al obtener glucosa');
+         if(!res.ok){
+            const errorText = await res.text();
+            console.error('Error detallado del backend:', errorText);
+            throw new Error(`Error del servidor (${res.status}): ${errorText}`);
         }
 
         const data: DataResponse[] = await res.json();
+        if(data === null){
+            const textError = 'Aun no hay mediciones registradas';
+            return [{mensaje:textError}];
+        }
         return data;
     } catch (error: any) {
         console.log("Error al obtener glucosa: ", error);
